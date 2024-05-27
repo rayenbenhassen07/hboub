@@ -29,21 +29,15 @@ export default async function Home() {
           ">
             {listings.map((listing) => {
               return (
-                <div>
+                <div key={listing.id}>
                   <ListingCard
-                    currentUser = {currentUser}
-                    key={listing.id}
+                    currentUser={currentUser}
                     data={listing}
                   />
                 </div>)
             })}
-
-            
-            
           </div>
-
       </Container>
-      
     </div>
   )
 }
