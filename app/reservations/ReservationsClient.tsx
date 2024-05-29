@@ -39,6 +39,8 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     })
   }, [router]);
 
+  
+
   return (
     <Container>
       <Heading
@@ -62,9 +64,10 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         {reservations.map((reservation: any) => (
           
           <ListingCard
-            user={"user"}
+            user={reservation.userId}
             key={reservation.id}
             data={reservation.listing}
+            
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}

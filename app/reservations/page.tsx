@@ -22,6 +22,7 @@ const ReservationsPage = async () => {
   }
 
   const reservations = await getReservations({ authorId: currentUser.id });
+  
 
   if (reservations.length === 0) {
     return (
@@ -39,6 +40,7 @@ const ReservationsPage = async () => {
       <ReservationsClient
         reservations={reservations}
         currentUser={currentUser}
+        
       />
     </ClientOnly>
   );

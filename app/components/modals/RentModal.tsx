@@ -1,5 +1,7 @@
 'use client';
 
+import { BiUpload } from "react-icons/bi";
+import { FaCheck } from "react-icons/fa";
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -34,6 +36,8 @@ const RentModal = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(STEPS.CATEGORY);
+
+    const [upload , setupload] = useState(false);
 
     const [file, setFile] = useState<File | undefined>(undefined);
     const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
@@ -76,6 +80,8 @@ const RentModal = () => {
         console.log(data[0]);
         setCustomValue('image',data[0].toString());
         setIsLoading(false);
+        toast.success("Image Uploaded!");
+        setupload(true);
       })
       
       .catch((error) => {
@@ -170,7 +176,7 @@ const RentModal = () => {
         rentModal.onClose();
       })
       .catch(() => {
-        toast.error('Somthing went wrong');
+        toast.error('Something went wrong! Please try again.');
       }).finally(() => {
         setIsLoading(false);
       })
@@ -283,44 +289,83 @@ const RentModal = () => {
               title="Add some photos of your place"
               subtitle="Help guests understand your place"
             />
-
+          
+            {!upload ?  
+                  
             <form onSubmit={handleImage}>
-              <input
-                  id="image"
-                  type="file"
-                  disabled={isLoading}
-                  onChange={handleChange}
-                  required
-              />
-              {fileUrl && file && (
-                  <div className="flex flex-col justify-center gap-3">
-
-                    <div className="h-40 w-40 ">
-                      <Image src={fileUrl} alt={file.name} width={500} height={500} className="object-cover" />
-                    </div>
-                  </div>
-              )} 
-              <button
-                type="button"
-                className="border-2 rounded-xl p-2 transition  hover:bg-red-500 hover:text-white"
-                onClick={() => {
-                  setFile(undefined);
-                  setFileUrl(undefined);
-                }}
-              >
-                Remove
-              </button>
-              {file && fileUrl &&  (
-                <button
-                  type="submit"
-                  disabled={isLoading || !file}
-                  className="border-2 rounded-xl p-2 transition  hover:bg-green-500 hover:text-white"
+              <div className="flex justify-center items-center ">
+                <label
+                  htmlFor="image"
+                  className="flex items-center text-center space-x-2  px-28 lg:px-44 py-5 border-2 border-dashed  border-gray-600 rounded-lg cursor-pointer "
                 >
-                  {isLoading ? "Uploading..." : "Upload"}
-                </button>
-              )}
+                  <BiUpload size={20} className="h-10 w-10 text-black" />
+                  <span className="text-black text-sm lg:text-xl">Upload Image</span>
+                  <input
+                    id="image"
+                    type="file"
+                    disabled={isLoading}
+                    onChange={handleChange}
+                    required
+                    className="hidden"
+                  />
+                </label>
+              </div>
+
+              {fileUrl && file && (
+                <div className="flex flex-col justify-center gap-3">
+
+                  
+                  <div className="h-48 w-full m-2 ">
+                    <Image src={fileUrl} alt={file.name} width={500} height={500} className="w-full h-full object-cover" />
+                  </div>
+
+                  
+
+                  
+
+                  <button
+                    type="button"
+                    className="border-2 rounded-xl p-2 transition bg-red-200  hover:bg-red-500 hover:text-white"
+                    onClick={() => {
+                      setFile(undefined);
+                      setFileUrl(undefined);
+                    }}
+                  >
+                    Remove
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={isLoading || !file}
+                    className={`${!upload ? "": "hidden" } border-2 rounded-xl p-2 transition font-bold hover:bg-green-500 hover:text-white`} 
+                  >
+                    {isLoading ? "Uploading..." : "Upload"}
+                    {!upload ? <span></span> : <span>Uploaded</span>}
+                  </button> 
+                  
+                </div>
+              )} 
+              
+              
               
             </form>
+            : <div>
+              {fileUrl && file && (
+                <div className="flex flex-col justify-center gap-3">
+
+                  
+                  <div className="h-48 w-full m-2 ">
+                    <Image src={fileUrl} alt={file.name} width={500} height={500} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="w-full text-center font-bold text-xl flex justify-center items-center gap-4">
+                    <span>Uploaded !</span>
+                    <FaCheck className="text-green-500" size={26}/>
+                  </div>
+
+                </div>    
+              )}
+                
+              </div>}
 
                 
             
@@ -397,6 +442,7 @@ const RentModal = () => {
             secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
             title="Add post"
             body={bodyContent}
+            disabled={isLoading}
         
         />
     )

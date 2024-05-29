@@ -7,6 +7,7 @@ const Logo = () => {
 
   return (
     <Image
+    
     onClick={()=>router.push('/')}
     src="/images/logo4.png"
     alt="Logo"

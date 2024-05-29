@@ -12,6 +12,8 @@ import LoginModal from "./components/modals/LoginModal";
 import RegisterModal from "./components/modals/RegisterModal";
 import SearchModal from "./components/modals/SearchModal";
 import RentModal from "./components/modals/RentModal";
+import Footer from "./components/Footer";
+
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -28,21 +30,23 @@ export default async function RootLayout({
 
   const currentUser = await getCurrentUser();
 
-
   return (
     <html lang="en">
       <body className={font.className}>
-      <ClientOnly>
+        <ClientOnly>
           <ToasterProvider />
           <SearchModal />
           <RentModal />
           <LoginModal />
           <RegisterModal />
           <Navbar currentUser={currentUser} />
-        </ClientOnly>
+        </ClientOnly> 
         <div className="pb-20 pt-28">
           {children} 
         </div>
+        <ClientOnly>
+          <Footer />
+        </ClientOnly>
       </body>
     </html>
   );
