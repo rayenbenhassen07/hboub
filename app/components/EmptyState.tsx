@@ -10,8 +10,8 @@ interface EmptyStateProps{
     showReset?:boolean;
 }
 const EmptyState : React.FC<EmptyStateProps> = ({
-    title = "No exact matches",
-    subtitle ="Try changing or removing some of your filters",
+    title="Pas de correspondances exactes",
+    subtitle="Essayez de modifier ou de supprimer certains de vos filtres",
     showReset
 }) => {
     const router = useRouter();
@@ -31,11 +31,11 @@ const EmptyState : React.FC<EmptyStateProps> = ({
         
         />
 
-        <div className="w-48 mt-4">
+        <div className="w-52 mt-4">
             {showReset && (
                 <Button
                     outline
-                    label = "Remove all filters"
+                    label = "Supprimer tous les filtres"
                     onClick={() => router.push('/')}
                 />
             )}

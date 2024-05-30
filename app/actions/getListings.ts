@@ -11,7 +11,6 @@ export interface IListingsParams {
   category?: string | undefined;
 }
 
-
 export default async function getListings(
   params: IListingsParams
 ) {

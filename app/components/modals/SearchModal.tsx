@@ -107,10 +107,10 @@ const SearchModal = () => {
 
   const actionLabel = useMemo(() => {
     if(step === STEPS.INFO) {
-      return 'Search';
+      return 'Rechercher';
     }
 
-    return 'Next';
+    return 'Suivant';
   },[step])
 
   const secondaryActionLabel = useMemo(() => {
@@ -118,14 +118,15 @@ const SearchModal = () => {
       return undefined;
     }
 
-    return 'Back';
+    return 'Retour';
   },[step])
 
   let bodyContent = (
     <div className="flex flex-col gap-8">
       <Heading
-        title="Where do you wanna go?"
-        subtitle="Find the perfect location!"
+        title="Où voulez-vous aller ?"
+        subtitle="Trouvez l'emplacement parfait !"
+        
       />
 
       <CountrySelect 
@@ -145,8 +146,8 @@ const SearchModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="When do you plan to go?"
-          subtitle="Make sure everyone is free!"
+          title="Quand prévoyez-vous d'y aller ?"
+          subtitle="Assurez-vous que tout le monde est disponible !"
         />
         <Calendar
           value={dateRange}
@@ -160,31 +161,30 @@ const SearchModal = () => {
     bodyContent = (
       <div className="flex flex-col gap-8">
         <Heading
-          title="More information"
-          subtitle="Find your perfect place!"
+          title="Plus d'informations"
+          subtitle="Trouvez votre lieu parfait !"
         />
         <Counter 
           onChange={(value) => setGuestCount(value)}
           value={guestCount}
-          title="Guests" 
-          subtitle="How many guests are coming?"
+          title="Invités" 
+          subtitle="Combien d'invités viennent ?"
         />
         <hr />
         <Counter 
           onChange={(value) => setRoomCount(value)}
           value={roomCount}
-          title="Rooms" 
-          subtitle="How many rooms do you need?"
+          title="Chambres" 
+          subtitle="Combien de chambres avez-vous besoin ?"
         />        
         <hr />
         <Counter 
-          onChange={(value) => {
-            setBathroomCount(value)
-          }}
+          onChange={(value) => setBathroomCount(value)}
           value={bathroomCount}
-          title="Bathrooms"
-          subtitle="How many bahtrooms do you need?"
+          title="Salles de bains"
+          subtitle="Combien de salles de bains avez-vous besoin ?"
         />
+
       </div>
     )
   }
@@ -194,7 +194,7 @@ const SearchModal = () => {
       isOpen={searchModal.isOpen}
       onClose={searchModal.onClose}
       onSubmit={onSubmit}
-      title="Filters"
+      title="Filtres"
       actionLabel={actionLabel}
       secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
       secondaryActionLabel={secondaryActionLabel}

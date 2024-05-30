@@ -46,7 +46,7 @@ const CountrySelect : React.FC<CountrySelectProps> = ({
         <div>
             <Select 
             className="z-20"
-            placeholder='Anywhere'
+            placeholder="N'importe où"
             isClearable
             options={States.map(state => ({ value: state, label: state }))}
             value={value}

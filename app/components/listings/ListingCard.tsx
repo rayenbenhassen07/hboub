@@ -86,7 +86,7 @@ const ListingCard : React.FC<ListingCardProps> = ({
             <Image 
               fill
               alt = "Listing"
-              src={data.image}
+              src={data.images[0]}
               className="
                 object-cover
                 h-full
@@ -116,10 +116,10 @@ const ListingCard : React.FC<ListingCardProps> = ({
           </div>
           <div className="flex flex-row items-center gap-1">
             <div className="font-semibold">
-              $ {price}
+               {price} dt
             </div>
             {!reservation &&(
-              <div className="font-light">night</div>
+              <div className="font-light">par nuit</div>
             )}
           </div>
           {onAction && actionLabel && (
@@ -139,7 +139,7 @@ const ListingCard : React.FC<ListingCardProps> = ({
             <div>
               <Button 
                 small
-                label="View profile"
+                label="Voir le profil"
                 onClick={()=>router.push(`/user/${user}`)}
               />
             </div>

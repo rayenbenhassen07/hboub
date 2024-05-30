@@ -49,8 +49,8 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
             gap-2
           "
         >
-          <div>Hosted by {user?.name}</div>
-          <Avatar src={user?.image} />
+          <div>Créé par {user?.name}</div>
+          <Avatar width={30} height={30} src={user?.image} />
         </div>
         <div className="
             flex 
@@ -62,13 +62,13 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           "
         >
           <div>
-            {guestCount} guests
+            {guestCount} invités
           </div>
           <div>
-            {roomCount} rooms
+            {roomCount} chambres
           </div>
           <div>
-            {bathroomCount} bathrooms
+            {bathroomCount} salle de bain
           </div>
         </div>
       </div>

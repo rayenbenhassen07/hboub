@@ -20,7 +20,7 @@ const Search = () => {
         if (locationValue) {
             return locationValue;
         }
-        return "Anywhere";
+        return "Destination";
     },[locationValue]);
 
     const durationLabel = useMemo(() => {
@@ -33,18 +33,18 @@ const Search = () => {
             diff = 1;
           }
     
-          return `${diff} Days`;
+          return `${diff} Nuit`;
         }
     
-        return 'Any Week'
+        return 'Nombre des nuit'
     }, [startDate, endDate]);
 
     const guestLabel = useMemo(() => {
         if (guestCount) {
-            return `${guestCount} Guests`;
+            return `${guestCount} Personnes`;
         }
 
-        return 'Add Guests';
+        return 'Combien de personnes';
     }, [guestCount]);
 
     

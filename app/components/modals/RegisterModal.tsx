@@ -59,8 +59,8 @@ const RegisterModal = () => {
         <div className="flex flex-col gap-4">
 
             <Heading 
-                title="Welcome to hbibna" 
-                subtitle="Create an account" 
+                title="Bienvenue sur hbibna"
+                subtitle="Créez un compte"
             />
 
             <Input
@@ -75,7 +75,7 @@ const RegisterModal = () => {
 
             <Input
                 id="name"
-                label="Name"
+                label="Nom"
                 type="text"
                 disabled={isLoading}
                 register={register}
@@ -86,7 +86,7 @@ const RegisterModal = () => {
 
             <Input
                 id="password"
-                label="Password"
+                label="Mot de passe"
                 type="password"
                 disabled={isLoading}
                 register={register}
@@ -102,7 +102,7 @@ const RegisterModal = () => {
             <hr />
             <Button
                 outline
-                label="Continue with Google"
+                label="Continuer avec Google"
                 icon={FcGoogle}
                 onClick={() => signIn('google') }
             />
@@ -111,13 +111,13 @@ const RegisterModal = () => {
             <div className="text-neutral-500 text-center mt-4 font-light">
                 <div className="justify-center flex flex-row items-center gap-2">
                     <div>
-                        Already have an account
+                        Vous avez déjà un compte
                     </div>
                     <div 
                         onClick={onToggle}
                         className="text-neutral-800 cursor-pointer hover:underline"
                     >
-                        Log in
+                        Connexion
                     </div>
                 </div>
                 
@@ -129,8 +129,8 @@ const RegisterModal = () => {
     <Modal 
         disabled={isLoading} // disable the modification when the user click on submit
         isOpen={registerModal.isOpen}
-        title="Register"
-        actionLabel="Continue"
+        title="Inscription"
+        actionLabel="Continuer"
         onClose={registerModal.onClose}
         onSubmit={handleSubmit(onSubmit)}
         body={bodyContent}

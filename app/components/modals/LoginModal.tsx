@@ -70,10 +70,11 @@ const LoginModal = () => {
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading
-        title="Welcome back"
-        subtitle="Login to your account!"
+        title="Bon retour"
+        subtitle="Connectez-vous à votre compte !"
       />
       <Input
+      
         id="email"
         label="Email"
         disabled={isLoading}
@@ -83,7 +84,7 @@ const LoginModal = () => {
       />
       <Input
         id="password"
-        label="Password"
+        label="Mot de passe"
         type="password"
         disabled={isLoading}
         register={register}
@@ -98,14 +99,14 @@ const LoginModal = () => {
       <hr />
       <Button 
         outline 
-        label="Continue with Google"
+        label="Continuer avec Google"
         icon={FcGoogle}
         onClick={() => signIn('google') }
       />
       
       <div className="
       text-neutral-500 text-center mt-4 font-light">
-        <p>First time using Airbnb?
+        <div>Vous utilisez hbibna pour la première fois?
           <span 
             onClick={onToggle} 
             className="
@@ -113,8 +114,8 @@ const LoginModal = () => {
               cursor-pointer 
               hover:underline
             "
-            > Create an account</span>
-        </p>
+            > Créer un compte</span>
+        </div>
       </div>
     </div>
   )
@@ -123,8 +124,8 @@ const LoginModal = () => {
     <Modal
       disabled={isLoading}
       isOpen={loginModal.isOpen}
-      title="Login"
-      actionLabel="Continue"
+      title="Connexion"
+      actionLabel="Continuer"
       onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}

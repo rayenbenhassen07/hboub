@@ -35,12 +35,12 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       "
     >
       <div className="
-      flex flex-row items-center gap-1 p-4">
+      flex flex-row items-center gap-3 p-4">
         <div className="text-2xl font-semibold">
-          $ {price}
+          {price} dt
         </div>
         <div className="font-light text-neutral-600">
-          night
+          par nuit
         </div>
       </div>
       <hr />
@@ -55,7 +55,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       <div className="p-4">
         <Button 
           disabled={disabled} 
-          label="Reserve" 
+          label="Réserver" 
           onClick={onSubmit}
         />
       </div>
@@ -75,7 +75,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
           Total
         </div>
         <div>
-          $ {totalPrice}
+          {totalPrice} dt
         </div>
       </div>
     </div>

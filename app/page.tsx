@@ -50,6 +50,7 @@ const Home = async ({ searchParams }: HomeProps) => {
             />
           ))}
         </div>
+        
       </Container>
     </ClientOnly>
   )

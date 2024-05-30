@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-
-
-
-
 import {
   S3Client,
-  ListObjectsCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 
@@ -19,45 +14,33 @@ const s3 = new S3Client({
   },
 });
 
-
-
-
-
-// endpoint to upload a file to the bucket
 export async function POST(request: NextRequest) {
-    try{
-        const formData = await request.formData();
-        const files = formData.getAll("file") as File[];
+  try {
+    const formData = await request.formData();
+    const files = formData.getAll("file") as File[];
 
-        if(!files){
-            return NextResponse.json({error: "No files found in request"},{status: 400});
-        }
-        
-        const response = await Promise.all(
-            files.map(async (file) => {
-                if (file.size > 10 * 1024 * 1024) {
-                    return NextResponse.json({error: "File size exceeds 10MB"}, {status: 400});
-                }
-                
-                const Body = (await file.arrayBuffer()) as Buffer;
-                await s3.send(new PutObjectCommand({ Bucket, Key: file.name, Body }));
-                
-                // Get the URL of the uploaded image
-                const imageUrl = `https://${Bucket}.s3.amazonaws.com/${file.name}`;
-                return imageUrl;
-            })
-        );
-
-        return NextResponse.json(response);
-
-    } catch(error) {
-        return NextResponse.json({error: "Error uploading file"});
+    if (!files || files.length === 0) {
+      return NextResponse.json({ error: "No files found in request" }, { status: 400 });
     }
-}
 
-// endpoint to get the list of files in the bucket
-export async function GET() {
-  const response = await s3.send(new ListObjectsCommand({ Bucket }));
-  return NextResponse.json(response?.Contents ?? []);
-}
+    const imageUrls: string[] = [];
 
+    for (const file of files) {
+      if (file.size > 10 * 1024 * 1024) {
+        return NextResponse.json({ error: "File size exceeds 10MB" }, { status: 400 });
+      }
+ 
+      const Body = await file.arrayBuffer() as Buffer;
+      await s3.send(new PutObjectCommand({ Bucket, Key: file.name, Body }));
+
+      // Get the URL of the uploaded image
+      const imageUrl = `https://${Bucket}.s3.amazonaws.com/${file.name}`;
+      imageUrls.push(imageUrl);
+    }
+
+    return NextResponse.json({ imageUrls });
+  } catch (error) {
+    console.error('Error handling request:', error);
+    return NextResponse.json({ error: 'Error handling request' }, { status: 500 });
+  }
+}

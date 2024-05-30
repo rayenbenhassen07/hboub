@@ -1,7 +1,7 @@
 'use client';
 
 import { BiUpload } from "react-icons/bi";
-import { FaCheck } from "react-icons/fa";
+import { FaBullseye, FaCheck } from "react-icons/fa";
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
@@ -39,27 +39,21 @@ const RentModal = () => {
 
     const [upload , setupload] = useState(false);
 
-    const [file, setFile] = useState<File | undefined>(undefined);
-    const [fileUrl, setFileUrl] = useState<string | undefined>(undefined);
+    const [file, setFile] = useState<File[]>([]);
+    const [fileUrl, setFileUrl] = useState<string[]>([]);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      setFile(file);
-
-      if (fileUrl){
-        URL.revokeObjectURL(fileUrl);
+      const selectedFiles = e.target.files;
+      if (selectedFiles) {
+          const newFiles = Array.from(selectedFiles);
+          setFile((prevFiles) => [...prevFiles, ...newFiles]);
+          const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+          setFileUrl((prevUrls) => [...prevUrls, ...newUrls]);
       }
-
-
-      if (file){
-        const url = URL.createObjectURL(file);
-        setFileUrl(url);
-      }else{
-        setFileUrl(undefined);
-      }
-  };
-
-    const handleImage = (e:any) => {
+    };
+    
+    const handleImage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if(!file){
@@ -69,29 +63,28 @@ const RentModal = () => {
     setIsLoading(true);
 
     const formData = new FormData();
-    formData.append("file", file as any);
+
+    file.forEach((file) => {
+        formData.append('file', file);
+    });
+    
 
     fetch("/api/documents", {
       method: "POST",
       body: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data[0]);
-        setCustomValue('image',data[0].toString());
-        setIsLoading(false);
-        toast.success("Image Uploaded!");
-        setupload(true);
-      })
-      
-      .catch((error) => {
-        console.error(error);
-        setIsLoading(false);
-      });
-      
-      
-      
-    };
+
+    .then((response) => response.json())
+    .then((data) => {
+      setCustomValue('images', data.imageUrls);
+      toast.success('Image Uploaded');
+      setIsLoading(false);
+      setupload(true);
+    })
+    .catch(() => {
+        toast.error('Something went wrong! Please try again.');
+    })};
+    
 
 
     const {
@@ -112,7 +105,7 @@ const RentModal = () => {
         roomCount : 1,
         bathroomCount : 1,
 
-        image : '',
+        images : [],
 
         price : 1 ,
         title : '',
@@ -125,7 +118,10 @@ const RentModal = () => {
     const guestCount = watch('guestCount');
     const roomCount = watch('roomCount');
     const bathroomCount = watch('bathroomCount');
-    const image = watch('image');
+    const images = watch('images');
+    
+
+   
     
     
 
@@ -147,10 +143,10 @@ const RentModal = () => {
 
     const actionLabel = useMemo(() => {
         if (step === STEPS.PRICE) {
-          return 'Create'
+          return 'Créer'
         }
     
-        return 'Next'
+        return 'Suivant'
       }, [step]);
 
     const secondaryActionLabel = useMemo(() => {
@@ -158,7 +154,7 @@ const RentModal = () => {
         return undefined
       }
 
-      return 'Back'
+      return 'Retour'
     }, [step]);
 
     const onSubmit : SubmitHandler<FieldValues> = (data) =>{
@@ -186,8 +182,8 @@ const RentModal = () => {
       let bodyContent = (
         <div className="flex flex-col gap-8">
           <Heading
-            title="Which of these best describes your place?"
-            subtitle="Pick a category"
+            title="Laquelle de ces options décrit le mieux votre lieu ?"
+            subtitle="Choisissez une catégorie"
           />
           <div 
             className="
@@ -221,8 +217,8 @@ const RentModal = () => {
         bodyContent = (
           <div className=" flex flex-col gap-8">
             <Heading 
-            title="Where is your place located ?"
-            subtitle="Help guests find you !"
+              title="Où se situe votre lieu ?"
+              subtitle="Aidez les invités à vous trouver !"
             />
             
             <CountrySelect
@@ -249,142 +245,157 @@ const RentModal = () => {
         bodyContent = (
           <div className="flex flex-col gap-8">
             <Heading 
-              title="Share some basics about your place"
-              subtitle="What amenities do you have ?"
+              title="Partagez quelques informations de base sur votre lieu"
+              subtitle="Quels équipements avez-vous ?"
+              
             />
     
             <Counter 
-             title="Guests"
-             subtitle="How many guests do you allow ?"
-             value={guestCount}
-             onChange={(value) => setCustomValue('guestCount' , value)}
+              title="Invités"
+              subtitle="Combien d'invités autorisez-vous ?"
+              value={guestCount}
+              onChange={(value) => setCustomValue('guestCount', value)}
             />
-            
+
             <hr />
-    
+
             <Counter 
-             title="Rooms"
-             subtitle="How many rooms do you have ?"
-             value={roomCount}
-             onChange={(value) => setCustomValue('roomCount' , value)}
+              title="Chambres"
+              subtitle="Combien de chambres avez-vous ?"
+              value={roomCount}
+              onChange={(value) => setCustomValue('roomCount', value)}
             />
-    
+
             <hr />
-    
+
             <Counter 
-             title="Bathrooms"
-             subtitle="How many bathrooms do you have ?"
-             value={bathroomCount}
-             onChange={(value) => setCustomValue('bathroomCount' , value)}
-            />  
+              title="Salles de bains"
+              subtitle="Combien de salles de bains avez-vous ?"
+              value={bathroomCount}
+              onChange={(value) => setCustomValue('bathroomCount', value)}
+            />
             
           </div>
         )
       }
 
       if (step === STEPS.IMAGES){
-        bodyContent = (
-          <div className="flex flex-col gap-8">
-            <Heading 
-              title="Add some photos of your place"
-              subtitle="Help guests understand your place"
-            />
-          
-            {!upload ?  
-                  
-            <form onSubmit={handleImage}>
-              <div className="flex justify-center items-center ">
-                <label
-                  htmlFor="image"
-                  className="flex items-center text-center space-x-2  px-28 lg:px-44 py-5 border-2 border-dashed  border-gray-600 rounded-lg cursor-pointer "
-                >
-                  <BiUpload size={20} className="h-10 w-10 text-black" />
-                  <span className="text-black text-sm lg:text-xl">Upload Image</span>
-                  <input
-                    id="image"
-                    type="file"
-                    disabled={isLoading}
-                    onChange={handleChange}
-                    required
-                    className="hidden"
-                  />
-                </label>
-              </div>
-
-              {fileUrl && file && (
-                <div className="flex flex-col justify-center gap-3">
-
-                  
-                  <div className="h-48 w-full m-2 ">
-                    <Image src={fileUrl} alt={file.name} width={500} height={500} className="w-full h-full object-cover" />
-                  </div>
-
-                  
-
-                  
-
-                  <button
-                    type="button"
-                    className="border-2 rounded-xl p-2 transition bg-red-200  hover:bg-red-500 hover:text-white"
-                    onClick={() => {
-                      setFile(undefined);
-                      setFileUrl(undefined);
-                    }}
-                  >
-                    Remove
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={isLoading || !file}
-                    className={`${!upload ? "": "hidden" } border-2 rounded-xl p-2 transition font-bold hover:bg-green-500 hover:text-white`} 
-                  >
-                    {isLoading ? "Uploading..." : "Upload"}
-                    {!upload ? <span></span> : <span>Uploaded</span>}
-                  </button> 
-                  
-                </div>
-              )} 
-              
-              
-              
-            </form>
-            : <div>
-              {fileUrl && file && (
-                <div className="flex flex-col justify-center gap-3">
-
-                  
-                  <div className="h-48 w-full m-2 ">
-                    <Image src={fileUrl} alt={file.name} width={500} height={500} className="w-full h-full object-cover" />
-                  </div>
-                  <div className="w-full text-center font-bold text-xl flex justify-center items-center gap-4">
-                    <span>Uploaded !</span>
-                    <FaCheck className="text-green-500" size={26}/>
-                  </div>
-
-                </div>    
-              )}
-                
-              </div>}
-
-                
+        if (step === STEPS.IMAGES){
+          bodyContent = (
+            <div className="flex flex-col gap-8">
+              <Heading 
+                title="Ajoutez quelques photos de votre lieu"
+                subtitle="Aidez les invités à comprendre votre lieu"
+              />
             
-          </div>     
-          
-        )
+              {!upload ?  
+                    
+                <form onSubmit={handleImage}>
+                  <div className="flex justify-center items-center ">
+                    <label
+                      htmlFor="image"
+                      className="flex items-center text-center space-x-2  px-28 lg:px-44 py-5 border-2 border-dashed  border-gray-600 rounded-lg cursor-pointer "
+                    >
+                      <BiUpload size={20} className="h-10 w-10 text-black" />
+                      <span className="text-black text-sm lg:text-xl">Importer des images</span>
+                      <input
+                        id="image"
+                        type="file"
+                        disabled={isLoading}
+                        onChange={handleChange}
+                        required
+                        className="hidden"
+                        accept="image/*"
+                        multiple
+                      />
+                    </label>
+                  </div>
+
+                  {(fileUrl.length != 0) && (file.length != 0) && (
+                    <div className="flex flex-col justify-center gap-3">
+                      <div className="h-44 overflow-y-auto border-2 border-separate  border-gray-600 rounded-lg mt-4 lg:mx-4">
+                        <div className="flex flex-wrap">
+
+                          {file.map((f, index) => (
+                            <div key={index} className="h-32 w-[20%] m-2 ">
+                              <Image src={fileUrl[index]} alt={f.name} width={500} height={500} className="w-full h-full object-cover" />
+                            </div>
+                          ))}
+                          
+                        </div>
+                      </div>
+
+                      <div className="w-full flex justify-center items-center gap-4">
+                        <button
+                          type="button"
+                          className="border-2 rounded-xl p-2 transition bg-red-200  hover:bg-red-500 hover:text-white"
+                          onClick={() => {
+                            setFile([]);
+                            setFileUrl([]);
+                          }}
+                        >
+                          Supprimer
+                        </button>
+
+                        <button
+                          type="submit"
+                          disabled={isLoading || !file}
+                          className={`${!upload ? "": "hidden" } border-2 rounded-xl p-2 transition font-bold hover:bg-green-500 hover:text-white`} 
+                        >
+                          {isLoading ? "Téléversement en cours..." : "Importer"}
+                          {!upload ? <span></span> : <span>Téléversé</span>}
+                        </button> 
+                      </div>
+                      
+                    </div>
+                  )} 
+                  
+                  
+                  
+                </form>
+              : 
+                <div>
+                  {fileUrl && file && (
+                    <div className="flex flex-col justify-center gap-3">
+                      <div className="h-44 overflow-y-auto border-2 border-separate  border-gray-600 rounded-lg mt-4 lg:mx-4">
+                        <div className="flex flex-wrap">
+
+                          {file.map((f, index) => (
+                            <div key={index} className="h-32 w-[20%] m-2 ">
+                              <Image src={fileUrl[index]} alt={f.name} width={500} height={500} className="w-full h-full object-cover" />
+                            </div>
+                          ))}
+                          
+                        </div>
+                      </div>
+                      <div className="w-full text-center font-bold text-xl flex justify-center items-center gap-4">
+                        <span>Téléversé !</span>
+                        <FaCheck className="text-green-500" size={26}/>
+                      </div>
+
+                    </div>    
+                  )} 
+                </div>
+              }
+
+                  
+              
+            </div>     
+          )
+        }
       }
 
       if (step === STEPS.DESCRIPTION){
         bodyContent = (
           <div className="flex flex-col gap-8">
             <Heading
-              title="How would you describe your place ?"
-              subtitle="Short and sweet works best!"
+              title="Comment décririez-vous votre lieu ?"
+              subtitle="Courte et douce fonctionne le mieux !"
             />
     
             <Input
               id = "title"
-              label="Title"
+              label="Titre"
               disabled = {isLoading}
               register={register}
               errors={errors}
@@ -410,13 +421,13 @@ const RentModal = () => {
         bodyContent = (
           <div className="flex flex-col gap-8">
             <Heading
-              title="Now, set your price"
-              subtitle="How much do you charge per night!"
+              title="Maintenant, fixez votre prix"
+              subtitle="Combien facturez-vous par nuit !"
             />
     
             <Input
               id = "price"
-              label="price"
+              label="prix"
               type="number"
               disabled = {isLoading}
               formatPrice
@@ -440,7 +451,7 @@ const RentModal = () => {
             actionLabel={actionLabel}
             secondaryActionLabel={secondaryActionLabel}
             secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
-            title="Add post"
+            title="Créer une annonce"
             body={bodyContent}
             disabled={isLoading}
         

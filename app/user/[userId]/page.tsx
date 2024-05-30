@@ -42,7 +42,7 @@ const Page = ({ params }: { params: UserParams }) => {
             <div className="p-4 relative">
                 
                 <div className="mb-4">
-                    <p className="text-gray-600 font-medium">Name:</p>
+                    <p className="text-gray-600 font-medium">Nom:</p>
                     <p className="text-gray-900">{user.name}</p>
                 </div>
                 <div className="mb-4">

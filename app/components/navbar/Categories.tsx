@@ -24,61 +24,62 @@ import CategoryBox from '../CategoryBox';
 
 export const categories = [
   {
-    label: 'Beach',
+    label: 'Plage',
     icon: TbBeach,
-    description: 'This property is close to the beach!',
+    description: 'Cette propriété est proche de la plage !',
   },
   {
-    label: 'Modern',
+    label: 'Moderne',
     icon: MdOutlineVilla,
-    description: 'This property is modern!'
+    description: 'Cette propriété est moderne !'
   },
   {
-    label: 'Countryside',
+    label: 'Campagne',
     icon: TbMountain,
-    description: 'This property is in the countryside!'
+    description: 'Cette propriété est à la campagne !'
   },
   {
-    label: 'Pools',
+    label: 'Piscines',
     icon: TbPool,
-    description: 'This is property has a beautiful pool!'
+    description: 'Cette propriété a une belle piscine !'
   },
   {
-    label: 'Islands',
+    label: 'Îles',
     icon: GiIsland,
-    description: 'This property is on an island!'
+    description: 'Cette propriété est sur une île !'
   },
   {
-    label: 'Lake',
+    label: 'Lac',
     icon: GiBoatFishing,
-    description: 'This property is near a lake!'
+    description: 'Cette propriété est près d\'un lac !'
   },
   {
-    label: 'Castles',
+    label: 'Châteaux',
     icon: GiCastle,
-    description: 'This property is an ancient castle!'
+    description: 'Cette propriété est un ancien château !'
   },
   {
     label: 'Camping',
     icon: GiForestCamp,
-    description: 'This property offers camping activities!'
+    description: 'Cette propriété offre des activités de camping !'
   },
   {
-    label: 'Arctic',
+    label: 'Arctique',
     icon: BsSnow,
-    description: 'This property is in arctic environment!'
+    description: 'Cette propriété est dans un environnement arctique !'
   },
   {
-    label: 'Desert',
+    label: 'Désert',
     icon: GiCactus,
-    description: 'This property is in the desert!'
+    description: 'Cette propriété est dans le désert !'
   },
   {
-    label: 'Lux',
+    label: 'Luxe',
     icon: IoDiamond,
-    description: 'This property is brand new and luxurious!'
+    description: 'Cette propriété est neuve et luxueuse !'
   }
-]
+];
+
 
 const Categories = () => {
   const params = useSearchParams();
