@@ -53,7 +53,7 @@ const ListingHead: React.FC<ListingHeadProps> = ({
             className='h-[70vh] w-full rounded-lg mySwiper'
           >
             {imageSrc.map((src, index) => (
-            <SwiperSlide >
+            <SwiperSlide key={index} >
               <Image
                 key={index}
                 src={src}
