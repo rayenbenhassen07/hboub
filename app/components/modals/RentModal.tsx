@@ -411,6 +411,8 @@ const RentModal = () => {
               register={register}
               errors={errors}
               required
+              textarea
+              
             />
     
           </div>
