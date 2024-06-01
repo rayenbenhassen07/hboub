@@ -33,7 +33,7 @@ const AllimagesModal:React.FC<AllimagesModalProps> = ({
           className='h-[50vh] lg:h-[60vh] w-full rounded-lg mySwiper'
         >
           {imageSrc.map((src, index) => (
-          <SwiperSlide >
+          <SwiperSlide key={index}>
             <Image
               key={index}
               src={src}
