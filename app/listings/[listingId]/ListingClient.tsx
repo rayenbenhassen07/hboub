@@ -22,6 +22,7 @@ import ListingReservation from "@/app/components/listings/ListingReservation";
 
 
 
+
 const initialDateRange = {
     startDate: new Date(),
     endDate: new Date(),
@@ -167,6 +168,7 @@ const ListingClient:React.FC<ListingClientProps> = ({
               
             </div>
           </div>
+          
         </div>
       </div>
     </Container>

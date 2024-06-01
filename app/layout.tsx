@@ -15,6 +15,7 @@ import RentModal from "./components/modals/RentModal";
 import Footer from "./components/Footer";
 
 
+
 const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default async function RootLayout({
       <body className={font.className}>
         <ClientOnly>
           <ToasterProvider />
+          
           <SearchModal />
           <RentModal />
           <LoginModal />
